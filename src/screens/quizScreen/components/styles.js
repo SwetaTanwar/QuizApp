@@ -23,6 +23,7 @@ export const OptionsText = styled.Text`
   color: ${COLORS.BLACK_TEXT};
   letter-spacing: -0.01px;
   font-size: 16px;
+  flex: 1;
   line-height: 24px;
 `;
 

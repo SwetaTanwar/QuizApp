@@ -1,7 +1,12 @@
 import React, { useState } from "react";
 
-import { data } from "../../constants/dummyData";
+import Options from "./components/options";
+import Solution from "./components/solution";
+
+import { data } from "../../constants/questionnaire";
 import ProgressBar from "../../components/progressBar";
+
+import { showAlert } from "../../utils";
 
 import {
   OptionsContainer,
@@ -11,8 +16,6 @@ import {
   QuizContainer,
   SolutionsContainer,
 } from "./styles";
-import Options from "./components/options";
-import Solution from "./components/solution";
 
 export default function QuizScreen() {
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -20,6 +23,16 @@ export default function QuizScreen() {
   const [isAnswerGiven, setIsAnswerGiven] = useState(false)
   const [isAnswerSubmitted, setIsAnswerSubmitted] = useState(false)
   const [quizFinished, setQuizFinished] = useState(false)
+  const [score, setScore] = useState(0)
+
+  function resetQuiz () {
+    setCurrentQuestionIndex(0)
+    setIsAnswerCorrect(false)
+    setIsAnswerGiven(false)
+    setQuizFinished(false)
+    setIsAnswerSubmitted(false)
+    setScore(0)
+  }
 
   return <QuizContainer isQuizFinished={quizFinished} pointerEvents={quizFinished ? 'none' : 'auto'}>
     <PaddingHorizontal>
@@ -46,6 +59,7 @@ export default function QuizScreen() {
   </QuizContainer>;
 
   function onAnswerSelection (answer) {
+    if (answer) setScore(prevScore => prevScore + 1)
     setIsAnswerCorrect(answer)
     setIsAnswerGiven(true)
   }
@@ -62,10 +76,21 @@ export default function QuizScreen() {
       setIsAnswerSubmitted(false)
     } else {
       setQuizFinished(true)
+      showScore()
     }
+  }
+
+  function showScore() {
+    showAlert('Quiz Finished!', `You scored: ${score}/${data.length}`, true, resetQuiz)
   }
 
   function onQuizCloseTapped () {
     setQuizFinished(true)
+    showAlert('Quit!', 'Are you sure you want to quit?',false, resetQuiz, dismissAlert)
   }
+
+  function dismissAlert() {
+    setQuizFinished(false)
+  }
+
 }

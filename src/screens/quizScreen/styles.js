@@ -20,7 +20,10 @@ export const QuestionContainer = styled.View`
 `;
 
 export const SolutionsContainer = styled.View`
-  margin-top: 32px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
 `;
 
 export const QuestionText = styled.Text`
